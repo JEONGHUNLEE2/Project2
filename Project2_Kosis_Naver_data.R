@@ -11,12 +11,12 @@ library(data.table)
 
 rm(list = ls())
 
-save.image("project2_Kosis_Naver_data0304.RData")
+save.image("project2_Kosis_Naver_data0308.RData")
 aa <- read.csv("mw_data_기기별.csv")
 bb <- read.csv("mw_data_성별.csv")
 cc_age <- read.csv("mw_data_연령대.csv")
 
-shead(aa)
+head(aa)
 head(bb)
 head(gender)
 head(df_gender)
@@ -35,10 +35,22 @@ View(df_device)
 df_device <- df_device %>%  mutate(년도 = substr(df_device$period, 1,4))
 df_device <- df_device %>%  mutate(월 = substr(df_device$period, 6,7))
 df_device %>% arrange(년도, 월)
-head(df_age)
+head(age)
 head(df_gender)
+head(df_device)
+
+write.csv(age, "raw_age.csv")
+write.csv(df_gender, "raw_gender.csv")
+write.csv(df_device, "raw_device.csv")
+
+View(device)
+View(df_device)
+head(device)
+df_device <- as.data.frame(df_device)
 #--
 str(df_device)
+
+
 
 df_device 
 tail(df_device)
@@ -486,8 +498,46 @@ df17 <- age %>% filter(검색기기 == "mobile" &  카테고리명 == "화장품
 df18 <- age %>% filter(검색기기 == "pc" &  카테고리명 == "화장품_미용" & 성별 == "여자" & group %in% c("30","20")) # 30, 20
 
 data <- rbind(df1,df2,df3,df4,df5,df6,df7,df8,df9,df10,df11,df12,df13,df14,df15,df16,df17,df18)
+age_two <- data %>% group_by(period, 카테고리명, 검색기기, 년도, 월) %>% summarise(ratio = sum(ratio) / 2) %>% arrange(카테고리명, 검색기기)
+head(age_two)
+head(data)
+write.csv(age_two, "age_two.csv")
+
 # gender 결과 참고해서 최대 잠재고객(성별) 중에서 연령대!
 #---이거 비슷하게
+
+df1 <- age %>% filter(검색기기 == "mobile" &  카테고리명 == "가구_인테리어" & 성별 == "여자"  & group %in% c("30"))  #30,40
+df2 <- age %>% filter(검색기기 == "pc" &  카테고리명 == "가구_인테리어" & 성별 == "남자" & group %in% c("30")) #30,40
+
+df3 <- age %>% filter(검색기기 == "mobile" &  카테고리명 == "디지털_가전" & 성별 == "여자" & group %in% c("30"))  # 30,20
+df4 <- age %>% filter(검색기기 == "pc" &  카테고리명 == "디지털_가전" & 성별 == "남자" & group %in% c("30")) # 30, 40 
+
+df5 <- age %>% filter(검색기기 == "mobile" &  카테고리명 == "생활_건강" & 성별 == "남자" & group %in% c("30")) #30, 40
+df6 <- age %>% filter(검색기기 == "pc" &  카테고리명 == "생활_건강" & 성별 == "남자" & group %in% c("30")) # 30, 40 
+
+df7 <- age %>% filter(검색기기 == "mobile" &  카테고리명 == "스포츠_레져" & 성별 == "남자" & group %in% c("30")) # 30,40
+df8 <- age %>% filter(검색기기 == "pc" &  카테고리명 == "스포츠_레져" & 성별 == "남자" & group %in% c("30")) # 30,40
+
+df9 <- age %>% filter(검색기기 == "mobile" &  카테고리명 == "식품" & 성별 == "여자" & group %in% c("30")) # 30, 40
+df10 <- age %>% filter(검색기기 == "pc" &  카테고리명 == "식품" & 성별 == "남자" & group %in% c("30")) # 30, 40 
+
+df11 <- age %>% filter(검색기기 == "mobile" &  카테고리명 == "여가_생활편의" & 성별 == "여자" & group %in% c("30")) # 30, 40
+df12 <- age %>% filter(검색기기 == "pc" &  카테고리명 == "여가_생활편의" & 성별 == "여자" & group %in% c("30")) # 30, 20 
+
+df13 <- age %>% filter(검색기기 == "mobile" &  카테고리명 == "출산_육아" & 성별 == "여자" & group %in% c("30")) # 30, 40
+df14 <- age %>% filter(검색기기 == "pc" &  카테고리명 == "출산_육아" & 성별 == "여자" & group %in% c("30")) # 30, 40
+
+df15 <- age %>% filter(검색기기 == "mobile" &  카테고리명 == "패션잡화" & 성별 == "여자" & group %in% c("30")) #  30, 20 
+df16 <- age %>% filter(검색기기 == "pc" &  카테고리명 == "패션잡화" & 성별 == "남자" & group %in% c("30")) # 30, 20
+
+df17 <- age %>% filter(검색기기 == "mobile" &  카테고리명 == "화장품_미용" & 성별 == "여자" & group %in% c("30")) # 30, 20 
+df18 <- age %>% filter(검색기기 == "pc" &  카테고리명 == "화장품_미용" & 성별 == "여자" & group %in% c("30")) # 30, 20
+
+data <- rbind(df1,df2,df3,df4,df5,df6,df7,df8,df9,df10,df11,df12,df13,df14,df15,df16,df17,df18)
+data
+head(age_two)
+head(data)
+write.csv(data, "age_one.csv")
 
 #각 주제별 원데이터도 정리(EDA)
 
